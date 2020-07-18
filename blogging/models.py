@@ -14,10 +14,19 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-# class Poll(models.Model):
-#     title = models.CharField(max_length=128)
-#     text = models.TextField(blank=True)
-#     score = models.IntegerField(default=0)
 
-#     def __str__(self):
-#         return self.title
+class Category(models.Model):
+    name = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    posts = models.ManyToManyField(Post, blank=True, related_name='categories')
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+    # name
+    # description
+    # post
+
+    # pass
