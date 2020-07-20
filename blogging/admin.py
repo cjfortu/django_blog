@@ -1,25 +1,24 @@
 from django.contrib import admin
-# import nested_admin
 from blogging.models import Post, Category
-# from django.db import models
 # Register your models here.
 
 
-# class CategoryInline(admin.StackedInline):
-#     model = Category
+class CategoryInline(admin.TabularInline):
+    model = Category.posts.through
 
 
-# class PostAdmin(admin.ModelAdmin):
-#     # pass
-#     inlines = [
-#         CategoryInline,
-#     ]
+class PostAdmin(admin.ModelAdmin):
+    inlines = [
+        CategoryInline,
+    ]
 
 
-# class CategoryAdmin(admin.ModelAdmin):
-#     exclude = ('posts',)
-#     # pass
+class CategoryAdmin(admin.ModelAdmin):
+    inlines = [
+        CategoryInline,
+    ]
+    exclude = ('posts',)
 
 
-admin.site.register(Post)#, PostAdmin)
-admin.site.register(Category)#, CategoryAdmin)
+admin.site.register(Post, PostAdmin)
+admin.site.register(Category, CategoryAdmin)

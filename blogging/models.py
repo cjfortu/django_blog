@@ -19,7 +19,7 @@ class Category(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
     posts = models.ManyToManyField(Post, blank=True, related_name='categories')
-    # post = models.ForeignKey(Post, blank=True, null=True, on_delete=models.CASCADE)
+    # post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = 'Categories'
