@@ -1,7 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from rest_framework import viewsets
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
-from blogging.models import Post
+from blogging.models import Post, Category
+from django import forms
+from django.utils import timezone
+from blogging.forms import MyPostForm
+from blogging.serializers import UserSerializer, GroupSerializer, PostSerializer, CategorySerializer
 
 
 def list_view(request):
@@ -23,6 +29,54 @@ def detail_view(request, post_id):
     context = {'post': post}
     return render(request, 'blogging/detail.html', context)
 
+
+def add_model(request):
+
+    if request.method == "POST":
+        form = MyPostForm(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/')
+
+    else:
+
+        form = MyPostForm()
+
+        return render(request, "my_template.html", {'form': form})
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Post.objects.all().order_by('-created_date')
+    serializer_class = PostSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 # def stub_view(request, *args, **kwargs):
     # body = "Stub View\n\n"
