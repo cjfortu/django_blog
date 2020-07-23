@@ -65,7 +65,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows posts to be viewed or edited.
     """
     queryset = Post.objects.all().order_by('-created_date')
     serializer_class = PostSerializer
@@ -73,7 +73,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
+    API endpoint that allows categories to be viewed or edited.
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
